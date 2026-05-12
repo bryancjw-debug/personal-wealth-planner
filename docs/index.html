@@ -364,6 +364,194 @@ function clampPulseIntoView(){const box=document.getElementById("liveSummary");i
 document.addEventListener("click",e=>{if(e.target.closest?.("#pulseToggle"))requestAnimationFrame(clampPulseIntoView);if(e.target.closest?.("#pulseReset")){localStorage.removeItem("pulseLeft");localStorage.removeItem("pulseTop");requestAnimationFrame(()=>{const box=document.getElementById("liveSummary");if(box){box.classList.remove("is-floating");box.style.removeProperty("--pulse-left");box.style.removeProperty("--pulse-top")}refreshLiveSummary()})}},true);
 window.addEventListener("resize",()=>requestAnimationFrame(clampPulseIntoView));
 const refreshLiveSummaryBeforeClamp=refreshLiveSummary;refreshLiveSummary=function(){refreshLiveSummaryBeforeClamp();requestAnimationFrame(clampPulseIntoView)}
+// Canonical color harmonization layer. This is intentionally visual-only:
+// it maps the older palette variables and newer workspace tokens into one
+// restrained Notion/Apple-inspired system without changing app structure.
+document.head.insertAdjacentHTML("beforeend",`<style>
+:root{
+  --workspace-bg:#f7f7f5;
+  --workspace-panel:#ffffff;
+  --workspace-card:#ffffff;
+  --workspace-card-2:#f3f4f2;
+  --workspace-line:rgba(31,35,32,.10);
+  --workspace-line-strong:rgba(31,35,32,.18);
+  --workspace-text:#1f2320;
+  --workspace-muted:#6b7280;
+  --workspace-muted-2:#98a2b3;
+  --workspace-field:#fbfbf9;
+  --workspace-field-line:#d8dcd5;
+  --workspace-accent:#2f7d75;
+  --workspace-accent-2:#4f98a3;
+  --workspace-accent-soft:#e7f1ef;
+  --workspace-success:#2f8f5b;
+  --workspace-success-soft:#e8f4ed;
+  --workspace-danger:#c85555;
+  --workspace-danger-soft:#faeded;
+  --workspace-warn:#b7791f;
+  --workspace-warn-soft:#fbf3dd;
+  --workspace-info:#3f7ead;
+  --workspace-info-soft:#e9f1f7;
+  --workspace-shadow:0 1px 2px rgba(16,24,40,.04),0 18px 42px rgba(16,24,40,.07);
+  --bg:var(--workspace-bg);--panel:var(--workspace-panel);--soft:var(--workspace-card-2);--line:var(--workspace-line);--text:var(--workspace-text);--muted:var(--workspace-muted);--primary:var(--workspace-accent);--accent:var(--workspace-accent);--teal:var(--workspace-accent-2);--green:var(--workspace-success);--success:var(--workspace-success);--bad:var(--workspace-danger);--rose:var(--workspace-danger);--warning:var(--workspace-warn);--gold:var(--workspace-warn);--violet:var(--workspace-info);--glass:rgba(255,255,255,.86);
+  --chart-asset:#2f7d75;
+  --chart-income:#3f7ead;
+  --chart-expense:#c85555;
+  --chart-cashflow:#2f8f5b;
+  --asset-investments:#5368c9;
+  --asset-property:#2f7d75;
+  --asset-car:#b7791f;
+  --asset-cpf-oa:#3f7ead;
+  --asset-cpf-sa:#806ee7;
+  --asset-cpf-ra:#c28a26;
+  --asset-cpf-ma:#39a890;
+  --asset-other:#8792a2;
+  --asset-freecash:#6f7a87;
+}
+[data-theme=dark]{
+  --workspace-bg:#0d0f0e;
+  --workspace-panel:#111412;
+  --workspace-card:#141716;
+  --workspace-card-2:#181c1a;
+  --workspace-line:oklch(1 0 0 / .07);
+  --workspace-line-strong:oklch(1 0 0 / .14);
+  --workspace-text:#f2f4f1;
+  --workspace-muted:#a0a8a2;
+  --workspace-muted-2:#6f7a73;
+  --workspace-field:#101311;
+  --workspace-field-line:oklch(1 0 0 / .13);
+  --workspace-accent:#4f98a3;
+  --workspace-accent-2:#5bb5a8;
+  --workspace-accent-soft:rgba(79,152,163,.13);
+  --workspace-success:#6bbf8a;
+  --workspace-success-soft:rgba(107,191,138,.13);
+  --workspace-danger:#e06b6b;
+  --workspace-danger-soft:rgba(224,107,107,.13);
+  --workspace-warn:#d9a441;
+  --workspace-warn-soft:rgba(217,164,65,.13);
+  --workspace-info:#7da7d9;
+  --workspace-info-soft:rgba(125,167,217,.13);
+  --workspace-shadow:0 18px 48px rgba(0,0,0,.26);
+  --bg:var(--workspace-bg);--panel:var(--workspace-panel);--soft:var(--workspace-card-2);--line:var(--workspace-line);--text:var(--workspace-text);--muted:var(--workspace-muted);--primary:var(--workspace-accent);--accent:var(--workspace-accent);--teal:var(--workspace-accent-2);--green:var(--workspace-success);--success:var(--workspace-success);--bad:var(--workspace-danger);--rose:var(--workspace-danger);--warning:var(--workspace-warn);--gold:var(--workspace-warn);--violet:var(--workspace-info);--glass:rgba(17,20,18,.88);
+  --chart-asset:#4f98a3;
+  --chart-income:#7da7d9;
+  --chart-expense:#e06b6b;
+  --chart-cashflow:#6bbf8a;
+  --asset-investments:#8a8ee6;
+  --asset-property:#4f98a3;
+  --asset-car:#d9a441;
+  --asset-cpf-oa:#7da7d9;
+  --asset-cpf-sa:#a395f2;
+  --asset-cpf-ra:#cfa24b;
+  --asset-cpf-ma:#68b9a6;
+  --asset-other:#8d98a5;
+  --asset-freecash:#a0a8a2;
+}
+html,body{background:var(--workspace-bg)!important;color:var(--workspace-text)!important}
+body{font-weight:400!important}
+body:before,body:after{background:none!important;display:none!important}
+body,.appbar,.wizard.panel,.panel,.card,.asset,.home,.eventbox,.policy-card,.coverage-box,.tax-relief-card,.cpf-live-card,.metric,.mini-card,.focus-card,.snap-card,.snapshot-panel,.pie-card,.live-summary,.live-chip,.chart,.chart-subpanel,.welcome-card,.record-dialog,.policy-editor-dialog,.snapshot-dialog{
+  background-image:none!important;
+}
+.appbar,.wizard.panel,.panel,.card,.asset,.home,.eventbox,.policy-card,.coverage-box,.tax-relief-card,.cpf-live-card,.metric,.mini-card,.focus-card,.snap-card,.snapshot-panel,.pie-card,.live-summary,.live-chip,.chart,.chart-subpanel,.welcome-card,.record-dialog,.policy-editor-dialog,.snapshot-dialog{
+  background-color:var(--workspace-card)!important;
+  border-color:var(--workspace-line)!important;
+  box-shadow:var(--workspace-shadow)!important;
+}
+.wizard.panel,.appbar,.chart,.snapshot-dialog,.policy-editor-dialog,.record-dialog{background-color:var(--workspace-panel)!important}
+.card,.asset,.home,.eventbox,.policy-card,.coverage-box,.tax-relief-card,.cpf-live-card,.metric,.mini-card,.focus-card,.snap-card,.pie-card,.live-chip{box-shadow:none!important}
+.btn,.profile-select,.seg,.view-toggle,.mobile-step-toggle,.tax-pill,.pie-row,.ux-table tr,.policy-table tr{
+  background:var(--workspace-card)!important;
+  border-color:var(--workspace-line)!important;
+  color:var(--workspace-text)!important;
+  box-shadow:none!important;
+}
+.btn.primary,.seg .active,.view-toggle button.active{
+  background:var(--workspace-accent)!important;
+  border-color:var(--workspace-accent)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+[data-theme=dark] .btn.primary,[data-theme=dark] .seg .active,[data-theme=dark] .view-toggle button.active{color:#07110f!important}
+.rail button.active{
+  background:var(--workspace-accent-soft)!important;
+  border-color:color-mix(in srgb,var(--workspace-accent) 24%,transparent)!important;
+  color:var(--workspace-accent)!important;
+  box-shadow:none!important;
+}
+input,select,textarea{
+  background:var(--workspace-field)!important;
+  border-color:var(--workspace-field-line)!important;
+  color:var(--workspace-text)!important;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--workspace-accent)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--workspace-accent) 16%,transparent)!important;
+}
+.metric strong,.mini-card strong,.focus-card strong,.live-chip strong,.cpf-live-chip strong,.tax-flow-card strong,.snap-card strong,.snap-row strong,.pie-row strong,td{
+  font-variant-numeric:tabular-nums!important;
+  font-feature-settings:"tnum" 1!important;
+}
+.metric strong,.mini-card strong,.focus-card strong,.live-chip strong,.cpf-live-chip strong,.tax-flow-card strong,.snap-card strong{color:var(--workspace-accent)!important}
+.flow-good strong,.good strong,.live-chip.cash strong,.retire.good strong,.positive,.pos{color:var(--workspace-success)!important}
+.flow-bad strong,.bad strong,.outflow strong,.negative,.neg{color:var(--workspace-danger)!important}
+.live-chip.cpf strong,.live-chip.net strong{color:var(--workspace-info)!important}
+.eyebrow,.app-title .icon-badge,.section-head .icon-badge{color:var(--workspace-accent)!important}
+.theme-toggle{color:var(--workspace-warn)!important;background:var(--workspace-card)!important}
+.required-field label:before,label.required-field:before{
+  color:var(--workspace-warn)!important;
+  border-color:color-mix(in srgb,var(--workspace-warn) 30%,transparent)!important;
+  background:var(--workspace-warn-soft)!important;
+}
+.filled-field label:before,label.filled-field:before{
+  color:var(--workspace-accent)!important;
+  border-color:color-mix(in srgb,var(--workspace-accent) 26%,transparent)!important;
+  background:var(--workspace-accent-soft)!important;
+}
+.field-required,.field-prefilled,.field-autofill{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+.field-required input,.field-required select,.field-prefilled input,.field-prefilled select,.field-autofill input,.field-autofill select{border-color:var(--workspace-field-line)!important}
+.snap-card{border-top:2px solid var(--workspace-accent)!important;background:var(--workspace-card)!important}
+.snap-card.flow-good{border-top-color:var(--workspace-success)!important}
+.snap-card.flow-bad{border-top-color:var(--workspace-danger)!important}
+.snapshot-moments,.snap-section{background:var(--workspace-card)!important;border-color:var(--workspace-line)!important}
+.chartbox,.active-chartbox,.cashflow-chartbox{background:var(--workspace-card)!important;border-color:var(--workspace-line)!important}
+.axis{stroke:var(--workspace-line-strong)!important}.tick{fill:var(--workspace-muted)!important}
+.active-chartbox rect[fill="var(--workspace-accent)"]{fill:var(--chart-asset)!important}
+.cashflow-chartbox path[stroke="var(--workspace-info)"]{stroke:var(--chart-income)!important}
+.cashflow-chartbox path[stroke="var(--workspace-danger)"]{stroke:var(--chart-expense)!important}
+.cashflow-chartbox path[stroke="var(--workspace-success)"]{stroke:var(--chart-cashflow)!important}
+.legend i[style*="--workspace-accent"]{background:var(--chart-asset)!important}
+.legend i[style*="--workspace-info"]{background:var(--chart-income)!important}
+.legend i[style*="--workspace-danger"]{background:var(--chart-expense)!important}
+.legend i[style*="--workspace-success"]{background:var(--chart-cashflow)!important}
+.shield-card,.coverage-shield{background:var(--workspace-card)!important;border-color:var(--workspace-line)!important}
+.great-coverage{border-color:color-mix(in srgb,var(--workspace-success) 34%,var(--workspace-line))!important}
+.welcome-card h1{color:var(--workspace-text)!important;background:none!important}
+.welcome-card p,.choice span{color:var(--workspace-muted)!important}
+.welcome-actions .choice.primary{background:var(--workspace-accent-soft)!important;border-color:color-mix(in srgb,var(--workspace-accent) 28%,transparent)!important}
+@media(max-width:860px){
+  .appbar,.wizard.panel,.panel,.chart{box-shadow:none!important}
+  main{background:var(--workspace-bg)!important}
+}
+</style>`);
+const assetPieBeforeCanonicalPalette=assetPie;
+assetPie=function(point){
+  const slices=[
+    {label:"Investments",value:point.investmentValue,color:"var(--asset-investments)"},
+    {label:"Property equity",value:point.housingEquity||0,color:"var(--asset-property)"},
+    {label:"Car equity",value:point.carEquity||0,color:"var(--asset-car)"},
+    {label:"CPF OA",value:point.cpf?.oa||0,color:"var(--asset-cpf-oa)"},
+    {label:"CPF SA",value:point.cpf?.sa||0,color:"var(--asset-cpf-sa)"},
+    {label:"CPF RA",value:point.cpf?.ra||0,color:"var(--asset-cpf-ra)"},
+    {label:"CPF MA",value:point.cpf?.ma||0,color:"var(--asset-cpf-ma)"},
+    {label:"Other assets",value:point.customEquity||0,color:"var(--asset-other)"},
+    {label:"Free cash",value:point.freeCash||0,color:"var(--asset-freecash)"}
+  ].filter(s=>s.value>0),total=slices.reduce((t,s)=>t+s.value,0)||1;
+  let acc=0;const r=88,c=110;
+  function arc(start,end){const a1=(start/total)*Math.PI*2-Math.PI/2,a2=(end/total)*Math.PI*2-Math.PI/2,x1=c+r*Math.cos(a1),y1=c+r*Math.sin(a1),x2=c+r*Math.cos(a2),y2=c+r*Math.sin(a2),large=end-start>total/2?1:0;return `M ${c} ${c} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z`}
+  const paths=slices.map(s=>{const start=acc;acc+=s.value;return `<path d="${arc(start,acc)}" fill="${s.color}" data-pie="${s.label}: ${money(s.value)}"><title>${s.label}: ${money(s.value)}</title></path>`}).join("");
+  const pieList=`<div class="pie-list">${slices.map(s=>`<button type="button" class="pie-row" data-pie="${s.label}: ${money(s.value)}"><span><i style="background:${s.color}"></i>${s.label}</span><strong>${money(s.value)}</strong></button>`).join("")}</div>`;
+  return `<aside class="pie-card"><p class="eyebrow">Asset Allocation</p><h3>Age ${point.age}</h3><svg viewBox="0 0 220 220" role="img" aria-label="Asset Allocation pie chart">${paths}<circle cx="110" cy="110" r="45" fill="var(--workspace-panel)"/><text x="110" y="106" text-anchor="middle" class="tick">Total</text><text x="110" y="126" text-anchor="middle" fill="var(--workspace-text)" font-size="16" font-weight="600">${money(point.totalAssets)}</text></svg>${pieList}<p class="cpfnote desktop-only">Hover a slice to see its value.</p></aside>`;
+}
 // Notion-inspired visual system refactor. This is deliberately presentation-only:
 // it normalizes layout, hierarchy, and interaction polish without changing projection math.
 document.head.insertAdjacentHTML("beforeend",`<style>
@@ -808,6 +996,47 @@ document.head.insertAdjacentHTML("beforeend",`<style>
 @media(max-width:430px){
   main{width:calc(100vw - 12px)!important}.ux-summary-grid,.metrics,.simplified-metrics,.live-summary-grid{grid-template-columns:1fr!important}.ux-table td,.policy-table td{grid-template-columns:1fr!important;text-align:left!important}.snapshot-actions{grid-template-columns:1fr!important}.wizard-actions{grid-template-columns:1fr!important}.chartbox svg,.active-chartbox svg,.cashflow-chartbox svg{min-width:660px!important}
 }
+</style>`);
+// Final palette guard: keep the canonical wealth-planner palette last in the
+// cascade so older visual experiments cannot leak saturated colors back in.
+document.head.insertAdjacentHTML("beforeend",`<style>
+:root{
+  --workspace-bg:#f7f7f5;--workspace-panel:#ffffff;--workspace-card:#ffffff;--workspace-card-2:#f3f4f2;--workspace-line:rgba(31,35,32,.10);--workspace-line-strong:rgba(31,35,32,.18);--workspace-text:#1f2320;--workspace-muted:#6b7280;--workspace-muted-2:#98a2b3;--workspace-field:#fbfbf9;--workspace-field-line:#d8dcd5;--workspace-accent:#2f7d75;--workspace-accent-2:#4f98a3;--workspace-accent-soft:#e7f1ef;--workspace-success:#2f8f5b;--workspace-success-soft:#e8f4ed;--workspace-danger:#c85555;--workspace-danger-soft:#faeded;--workspace-warn:#b7791f;--workspace-warn-soft:#fbf3dd;--workspace-info:#3f7ead;--workspace-info-soft:#e9f1f7;--workspace-shadow:0 1px 2px rgba(16,24,40,.04),0 18px 42px rgba(16,24,40,.07);--bg:var(--workspace-bg);--panel:var(--workspace-panel);--soft:var(--workspace-card-2);--line:var(--workspace-line);--text:var(--workspace-text);--muted:var(--workspace-muted);--primary:var(--workspace-accent);--accent:var(--workspace-accent);--teal:var(--workspace-accent-2);--green:var(--workspace-success);--success:var(--workspace-success);--bad:var(--workspace-danger);--rose:var(--workspace-danger);--warning:var(--workspace-warn);--gold:var(--workspace-warn);--violet:var(--workspace-info);--glass:rgba(255,255,255,.86);--chart-asset:#2f7d75;--chart-income:#3f7ead;--chart-expense:#c85555;--chart-cashflow:#2f8f5b;--asset-investments:#5368c9;--asset-property:#2f7d75;--asset-car:#b7791f;--asset-cpf-oa:#3f7ead;--asset-cpf-sa:#806ee7;--asset-cpf-ra:#c28a26;--asset-cpf-ma:#39a890;--asset-other:#8792a2;--asset-freecash:#6f7a87;
+}
+[data-theme=dark]{
+  --workspace-bg:#0d0f0e;--workspace-panel:#111412;--workspace-card:#141716;--workspace-card-2:#181c1a;--workspace-line:oklch(1 0 0 / .07);--workspace-line-strong:oklch(1 0 0 / .14);--workspace-text:#f2f4f1;--workspace-muted:#a0a8a2;--workspace-muted-2:#6f7a73;--workspace-field:#101311;--workspace-field-line:oklch(1 0 0 / .13);--workspace-accent:#4f98a3;--workspace-accent-2:#5bb5a8;--workspace-accent-soft:rgba(79,152,163,.13);--workspace-success:#6bbf8a;--workspace-success-soft:rgba(107,191,138,.13);--workspace-danger:#e06b6b;--workspace-danger-soft:rgba(224,107,107,.13);--workspace-warn:#d9a441;--workspace-warn-soft:rgba(217,164,65,.13);--workspace-info:#7da7d9;--workspace-info-soft:rgba(125,167,217,.13);--workspace-shadow:0 18px 48px rgba(0,0,0,.26);--bg:var(--workspace-bg);--panel:var(--workspace-panel);--soft:var(--workspace-card-2);--line:var(--workspace-line);--text:var(--workspace-text);--muted:var(--workspace-muted);--primary:var(--workspace-accent);--accent:var(--workspace-accent);--teal:var(--workspace-accent-2);--green:var(--workspace-success);--success:var(--workspace-success);--bad:var(--workspace-danger);--rose:var(--workspace-danger);--warning:var(--workspace-warn);--gold:var(--workspace-warn);--violet:var(--workspace-info);--glass:rgba(17,20,18,.88);--chart-asset:#4f98a3;--chart-income:#7da7d9;--chart-expense:#e06b6b;--chart-cashflow:#6bbf8a;--asset-investments:#8a8ee6;--asset-property:#4f98a3;--asset-car:#d9a441;--asset-cpf-oa:#7da7d9;--asset-cpf-sa:#a395f2;--asset-cpf-ra:#cfa24b;--asset-cpf-ma:#68b9a6;--asset-other:#8d98a5;--asset-freecash:#a0a8a2;
+}
+html,body{background:var(--workspace-bg)!important;color:var(--workspace-text)!important}
+body:before,body:after{display:none!important;background:none!important}
+.appbar,.wizard.panel,.panel,.card,.asset,.home,.eventbox,.policy-card,.coverage-box,.tax-relief-card,.cpf-live-card,.metric,.mini-card,.focus-card,.snap-card,.snapshot-panel,.pie-card,.live-summary,.live-chip,.chart,.chart-subpanel,.welcome-card,.record-dialog,.policy-editor-dialog,.snapshot-dialog{background-image:none!important}
+.appbar,.wizard.panel,.panel,.chart,.snapshot-dialog,.policy-editor-dialog,.record-dialog,.welcome-card{background-color:var(--workspace-panel)!important;border-color:var(--workspace-line)!important;box-shadow:var(--workspace-shadow)!important}
+.card,.asset,.home,.eventbox,.policy-card,.coverage-box,.tax-relief-card,.cpf-live-card,.metric,.mini-card,.focus-card,.snap-card,.snapshot-panel,.pie-card,.live-summary,.live-chip,.chart-subpanel{background-color:var(--workspace-card)!important;border-color:var(--workspace-line)!important;box-shadow:none!important}
+.btn,.profile-select,.seg,.view-toggle,.mobile-step-toggle,.tax-pill,.pie-row{background:var(--workspace-card)!important;border-color:var(--workspace-line)!important;color:var(--workspace-text)!important;box-shadow:none!important}
+.btn.primary,.seg .active,.view-toggle button.active{background:var(--workspace-accent)!important;border-color:var(--workspace-accent)!important;color:#fff!important;box-shadow:none!important}
+[data-theme=dark] .btn.primary,[data-theme=dark] .seg .active,[data-theme=dark] .view-toggle button.active{color:#07110f!important}
+.rail button.active{background:var(--workspace-accent-soft)!important;border-color:color-mix(in srgb,var(--workspace-accent) 24%,transparent)!important;color:var(--workspace-accent)!important;box-shadow:none!important}
+input,select,textarea{background:var(--workspace-field)!important;border-color:var(--workspace-field-line)!important;color:var(--workspace-text)!important}
+input:focus,select:focus,textarea:focus{border-color:var(--workspace-accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--workspace-accent) 16%,transparent)!important}
+.eyebrow,.app-title .icon-badge,.section-head .icon-badge{color:var(--workspace-accent)!important}
+.metric strong,.mini-card strong,.focus-card strong,.live-chip strong,.cpf-live-chip strong,.tax-flow-card strong,.snap-card strong{color:var(--workspace-accent)!important}
+.flow-good strong,.good strong,.live-chip.cash strong,.retire.good strong,.positive,.pos{color:var(--workspace-success)!important}
+.flow-bad strong,.bad strong,.outflow strong,.negative,.neg{color:var(--workspace-danger)!important}
+.live-chip.cpf strong,.live-chip.net strong{color:var(--workspace-info)!important}
+.theme-toggle{color:var(--workspace-warn)!important;background:var(--workspace-card)!important}
+.required-field label:before,label.required-field:before{color:var(--workspace-warn)!important;border-color:color-mix(in srgb,var(--workspace-warn) 30%,transparent)!important;background:var(--workspace-warn-soft)!important}
+.filled-field label:before,label.filled-field:before{color:var(--workspace-accent)!important;border-color:color-mix(in srgb,var(--workspace-accent) 26%,transparent)!important;background:var(--workspace-accent-soft)!important}
+.field-required,.field-prefilled,.field-autofill{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+.field-required input,.field-required select,.field-prefilled input,.field-prefilled select,.field-autofill input,.field-autofill select{border-color:var(--workspace-field-line)!important}
+.snap-card{border-top:2px solid var(--workspace-accent)!important;background:var(--workspace-card)!important}
+.snap-card.flow-good{border-top-color:var(--workspace-success)!important}.snap-card.flow-bad{border-top-color:var(--workspace-danger)!important}
+.axis{stroke:var(--workspace-line-strong)!important}.tick{fill:var(--workspace-muted)!important}
+.active-chartbox rect[fill="var(--workspace-accent)"]{fill:var(--chart-asset)!important}
+.cashflow-chartbox path[stroke="var(--workspace-info)"]{stroke:var(--chart-income)!important}
+.cashflow-chartbox path[stroke="var(--workspace-danger)"]{stroke:var(--chart-expense)!important}
+.cashflow-chartbox path[stroke="var(--workspace-success)"]{stroke:var(--chart-cashflow)!important}
+.legend i[style*="--workspace-accent"]{background:var(--chart-asset)!important}.legend i[style*="--workspace-info"]{background:var(--chart-income)!important}.legend i[style*="--workspace-danger"]{background:var(--chart-expense)!important}.legend i[style*="--workspace-success"]{background:var(--chart-cashflow)!important}
+.welcome-card h1{color:var(--workspace-text)!important;background:none!important}.welcome-card p,.choice span{color:var(--workspace-muted)!important}
+.welcome-actions .choice.primary{background:var(--workspace-accent-soft)!important;border-color:color-mix(in srgb,var(--workspace-accent) 28%,transparent)!important}
 </style>`);
 const renderBeforeMinimalDark=render;render=function(){document.querySelectorAll("body > .record-modal").forEach(m=>m.remove());let timer=setTimeout(()=>document.body.classList.add("app-rendering"),180);try{renderBeforeMinimalDark()}finally{clearTimeout(timer);document.body.classList.remove("app-rendering");requestAnimationFrame(animateKpis)}}
 render();
