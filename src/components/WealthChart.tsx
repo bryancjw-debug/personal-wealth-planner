@@ -39,7 +39,7 @@ export function WealthChart({ data, selectedAge, onSelectAge }: WealthChartProps
         <ComposedChart
           data={chartData}
           onClick={(event) => {
-            const payload = event?.activePayload?.[0]?.payload as AgeProjection | undefined;
+            const payload = (event as { activePayload?: Array<{ payload?: AgeProjection }> } | undefined)?.activePayload?.[0]?.payload;
             if (payload) onSelectAge(payload.age);
           }}
         >

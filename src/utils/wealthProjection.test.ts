@@ -8,7 +8,12 @@ describe("wealth projection", () => {
   });
 
   it("projects investments and excess cash by age", () => {
-    const result = projectWealth({ ...defaultWealthProfile, age: 40, projectionEndAge: 42 });
+    const result = projectWealth({
+      ...defaultWealthProfile,
+      age: 40,
+      projectionEndAge: 42,
+      assets: defaultWealthProfile.assets.map((asset) => ({ ...asset, dividendTreatment: "Take dividends as cash" }))
+    });
 
     expect(result).toHaveLength(3);
     expect(result[0].freeCash).toBe(0);
