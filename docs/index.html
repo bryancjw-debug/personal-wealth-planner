@@ -1039,6 +1039,36 @@ input:focus,select:focus,textarea:focus{border-color:var(--workspace-accent)!imp
 .welcome-actions .choice.primary{background:var(--workspace-accent-soft)!important;border-color:color-mix(in srgb,var(--workspace-accent) 28%,transparent)!important}
 </style>`);
 const renderBeforeMinimalDark=render;render=function(){document.querySelectorAll("body > .record-modal").forEach(m=>m.remove());let timer=setTimeout(()=>document.body.classList.add("app-rendering"),180);try{renderBeforeMinimalDark()}finally{clearTimeout(timer);document.body.classList.remove("app-rendering");requestAnimationFrame(animateKpis)}}
+// Only committed wizard navigation animates; ordinary edits and dashboard renders do not.
+document.head.insertAdjacentHTML('beforeend', `<style>.page,.page.shuffle,.page.shuffle *{animation:none!important}.wizard{position:relative}.page h2{scroll-margin-top:120px}.page h2:focus{outline:none}</style>`);
+let motionStep=null,motionDispose=()=>{};
+const renderBeforeVerticalDrift=render;
+render=function(){
+  const oldStep=motionStep;
+  const changed=oldStep!==step;
+  motionDispose();
+  const snapshots=Array.from(document.querySelectorAll('.wizard .page,.wizard .wizard-actions')).map(element=>element.cloneNode(true));
+  renderBeforeVerticalDrift();
+  const elements=Array.from(document.querySelectorAll('.wizard .page,.wizard .wizard-actions'));
+  motionStep=elements.length?step:null;
+  if(!changed||oldStep===null||!elements.length)return;
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const direction=step>oldStep?1:-1,animations=[],ghosts=[];
+    elements.forEach((element,index)=>{
+      const ghost=snapshots[index];if(!ghost)return;
+      ghost.removeAttribute('id');ghost.querySelectorAll('[id]').forEach(node=>node.removeAttribute('id'));
+      ghost.inert=true;ghost.setAttribute('aria-hidden','true');
+      Object.assign(ghost.style,{position:'absolute',top:element.offsetTop+'px',left:element.offsetLeft+'px',bottom:'auto',right:'auto',width:element.offsetWidth+'px',margin:'0',pointerEvents:'none',zIndex:'6'});
+      element.parentElement.appendChild(ghost);ghosts.push(ghost);
+      const options={duration:1100,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'};
+      animations.push(ghost.animate([{opacity:1,transform:'translateY(0)',offset:0},{opacity:0,transform:`translateY(${-direction*60}px)`,offset:.52},{opacity:0,transform:`translateY(${-direction*80}px)`}],options));
+      animations.push(element.animate([{opacity:0,transform:`translateY(${direction*80}px)`},{opacity:0,transform:`translateY(${direction*70}px)`,offset:.3},{opacity:1,transform:'translateY(0)'}],options));
+    });
+    const dispose=()=>{animations.forEach(animation=>animation.cancel());ghosts.forEach(ghost=>ghost.remove())};motionDispose=dispose;
+    Promise.allSettled(animations.map(animation=>animation.finished)).then(dispose);
+  }
+  const heading=document.querySelector('.wizard .page h2');if(heading){heading.tabIndex=-1;heading.scrollIntoView({block:'start',behavior:'instant'});heading.focus({preventScroll:true})}
+};
 render();
 </script>
 </body>
