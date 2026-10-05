@@ -6,7 +6,7 @@ This is a Singapore wealth projection app.
 - Follow the shared finance-app hierarchy guidance in `C:/Users/Bryan/Documents/Codex/AGENTS.md`: retain established palettes, use category-coloured headers in dark mode, and clear card borders/surface separation in light mode. Keep input and chart category colours consistent.
 - Do not publish unless user asks.
 - Main deployed file is `docs/index.html`.
-- Current repo is GitHub Pages from `main`.
+- Source lives on `main`; the verified GitHub Pages deployment serves `gh-pages` (checked 6 October 2026). Publish tracked `docs` content to that branch, not the unrelated React `dist`. Verify the live HTML after deployment.
 
 ## User Preferences and Step Motion (6 October 2026)
 
