@@ -1,0 +1,61 @@
+/* Workspace presentation only: the standalone calculation engine is unchanged. */
+html body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;background:var(--workspace-bg,var(--bg))!important;line-height:1.55}
+html body main#app{width:calc(100% - 40px)!important;max-width:none!important;margin-inline:20px!important;padding-top:100px!important;padding-bottom:72px!important}
+html body :is(.panel,.card,.asset,.home,.metric,.mini-card,.focus-card,.snap-card,.live-summary,.live-chip,.appbar,.btn,.choice,.record-dialog,.snapshot-dialog){box-shadow:none!important;background-image:none!important}
+html body :is(.panel,.card,.asset,.home,.metric,.mini-card,.focus-card,.snap-card,.live-chip,.choice){border-radius:8px!important;border:1px solid var(--workspace-line,var(--line))!important}
+html body :is(.card,.asset,.home,.metric,.mini-card,.btn,.choice):hover{transform:none!important}
+html body :is(button,input,select,textarea){font-family:inherit!important;box-shadow:none!important;letter-spacing:0!important}
+html body :is(.btn,.choice,.rail button){font-weight:600!important;border-radius:6px!important}
+html body :is(input,select,textarea){background:var(--workspace-card,var(--panel))!important;border:1px solid var(--workspace-line,var(--line))!important;min-height:44px}
+html body :is(.page h2,.panel h2){font-size:26px!important;line-height:1.3!important;font-weight:650!important}
+html body :is(.page h3,.card h3){font-size:18px!important;line-height:1.4!important}
+html body :is(label,.hint,.cpfnote){line-height:1.55!important}
+html body .appbar{left:20px!important;right:20px!important;max-width:none!important;width:auto!important;padding:10px 16px!important;border-radius:8px!important;background:var(--workspace-panel,var(--panel))!important;backdrop-filter:none!important}
+html body .wizard{grid-template-columns:208px minmax(0,1fr)!important;gap:28px!important;overflow:visible!important;background:transparent!important;border:0!important;padding:0!important;backdrop-filter:none!important;transform:none!important}
+html body .wizard>.rail{position:sticky!important;top:100px!important;display:flex!important;flex-direction:column!important;align-self:start!important;gap:4px!important;padding:0 16px 16px 0!important;max-height:calc(100dvh - 112px)!important;overflow-y:auto!important;background:transparent!important;border-right:1px solid var(--line)!important;border-bottom:0!important}
+html body .rail button{background:transparent!important;box-shadow:none!important;border:1px solid transparent!important;padding:10px!important;min-height:46px!important;color:var(--workspace-text,var(--text))!important;text-align:left}
+html body .rail button.active{background:var(--workspace-accent-soft,var(--soft))!important;border-color:var(--line)!important;color:var(--workspace-accent,var(--primary))!important}
+html body .rail button span{background:transparent!important;font-size:12px!important}
+html body .wizard-actions{grid-column:2!important;position:static!important;background:transparent!important;backdrop-filter:none!important;box-shadow:none!important;border-radius:0!important;margin:0!important}
+html body .live-summary{position:relative!important;grid-column:2!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;width:100%!important;max-width:none!important;margin:0!important;border:1px solid var(--line)!important;border-radius:8px!important;z-index:1!important}
+html body .live-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important}
+html body .live-summary.collapsed .live-summary-grid{display:none!important}
+html body .live-chip{padding:10px!important;background:transparent!important;border:0!important;border-right:1px solid var(--line)!important;border-radius:0!important}
+html body .page{min-width:0!important}
+html body .summary-motion{grid-column:2;grid-row:2;min-width:0;width:100%}
+html body main#app .wizard.panel.active-build.mobile-ready{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transform:none!important}
+html body :is(.mobile-sections-action,.mobile-section-projection){display:none!important}
+html body main#app .wizard .live-summary{position:static!important;transform:none!important;width:auto!important;max-width:none!important;min-width:0!important;margin:0!important;max-height:none!important;overflow:visible!important;grid-column:2!important;grid-row:2!important;box-shadow:none!important;border:1px solid var(--line)!important;border-radius:8px!important}
+@media(min-width:901px){html body main#app .wizard.mobile-ready{display:grid!important;grid-template-columns:208px minmax(0,1fr)!important}html body main#app .wizard>.page{grid-column:2!important;grid-row:1!important}html body main#app .wizard>.rail{grid-column:1!important;grid-row:1 / span 3!important}html body main#app .wizard>.live-summary{grid-row:2!important}html body main#app .wizard>.wizard-actions{grid-row:3!important}html body .rail button.active :is(b,span){color:var(--workspace-accent,var(--primary))!important}}
+html body .welcome{padding:20px!important;min-height:85dvh!important}
+html body .welcome-card{width:100%!important;max-width:none!important;border-radius:8px!important;padding:40px!important}
+html body .welcome-card h1{font-size:40px!important;line-height:1.2!important;max-width:900px}
+html body .welcome-actions .choice{padding:20px!important;min-height:112px!important}
+html body .step-jump{box-shadow:none!important;background:transparent!important;border-radius:6px!important}
+html body :focus-visible{outline:3px solid var(--workspace-accent,var(--primary))!important;outline-offset:3px}
+@media(min-width:1700px){html body .cashgrid,html body .form{column-gap:28px!important}html body .panel{padding:24px!important}}
+@media(min-width:901px){html body main:has(.step-jump){padding-left:236px!important}html body .step-jump{position:fixed!important;left:20px!important;top:100px!important;width:208px!important;max-height:calc(100dvh - 160px)!important;overflow:auto!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;padding:0!important;margin:0!important;border:0!important;border-right:1px solid var(--line)!important;z-index:20!important}html body .step-jump .btn{justify-content:flex-start!important;text-align:left!important;min-height:46px!important;background:transparent!important;border:0!important;white-space:normal!important}}
+@media(max-width:900px){
+ html body main#app{width:calc(100% - 24px)!important;margin-inline:12px!important;padding-top:100px!important}
+ html body .appbar{left:12px!important;right:12px!important}
+ html body main#app .wizard.mobile-ready{display:block!important}
+ html body main#app .wizard>.page{width:100%!important;max-width:none!important;min-width:0!important}
+ html body main#app .wizard>.live-summary{width:100%!important;margin-top:20px!important}
+ html body .wizard>.rail{position:fixed!important;display:flex!important;top:0!important;left:-280px!important;width:260px!important;height:100dvh!important;max-height:none!important;z-index:110!important;padding:24px 16px!important;background:var(--workspace-panel,var(--panel))!important;transition:left 180ms ease!important;border-right:1px solid var(--line)!important}
+ html body .wizard>.rail.open{left:0!important}
+ html body .mobile-step-toggle{display:flex!important;width:100%!important;margin:0 0 18px!important;min-height:48px!important;align-items:center;justify-content:center;gap:10px;border:1px solid var(--line)!important;background:var(--panel)!important;border-radius:6px!important}
+ html body .mobile-step-backdrop.open{position:fixed!important;inset:0!important;display:block!important;background:#11182755!important;z-index:100!important}
+ html body main#app .wizard-actions{position:fixed!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;z-index:80!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.2fr)!important;padding:10px 12px max(10px,env(safe-area-inset-bottom))!important;gap:8px!important;background:var(--workspace-panel,var(--panel))!important;border:0!important;border-top:1px solid var(--line)!important;transform:none!important}
+ html body .wizard-actions .btn{min-width:0!important;min-height:46px!important;padding-inline:8px!important}
+ html body .wizard-actions #viewDash{display:none!important}
+ html body .wizard-actions .mobile-sections-action,html body .rail .mobile-section-projection{display:flex!important;align-items:center;justify-content:center}
+ html body{padding-bottom:88px!important}
+ html body .summary-motion{margin-top:20px}
+ html body .mobile-jump-toggle{position:fixed!important;bottom:0!important;left:0!important;right:0!important;z-index:80!important;margin:0!important;padding:12px!important;border-top:1px solid var(--line)!important;background:var(--panel)!important;min-height:62px!important;border-radius:0!important}
+ html body .step-jump.open{position:fixed!important;top:auto!important;bottom:76px!important;left:12px!important;right:12px!important;max-height:60dvh!important;overflow:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;background:var(--panel)!important;z-index:79!important;padding:12px!important;border:1px solid var(--line)!important}
+ html body .live-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html body .welcome-card{padding:24px!important}
+ html body .welcome-card h1{font-size:30px!important}
+}
+@media(max-width:480px){html body main#app{width:calc(100% - 16px)!important;margin-inline:8px!important}html body .panel{padding:14px!important}html body .page h2{font-size:23px!important}}
+@media(prefers-reduced-motion:reduce){html body .wizard>.rail{transition:none!important}}
