@@ -112,6 +112,15 @@ body:after{background:radial-gradient(circle at 18% 8%,color-mix(in srgb,var(--t
 /* Focused layout and readability refinements */
 .expense-page-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,1fr);gap:18px;align-items:stretch}.expense-left .card,.expense-right .home,.expense-right .mascot-card{height:100%}.expense-left .card{min-height:430px}.expense-right{display:grid;grid-template-rows:minmax(190px,.72fr) minmax(260px,1fr);gap:18px}.expense-right .home{margin:0}.expense-right .homegrid{grid-template-columns:1fr 1fr}.mascot-card.feature{grid-template-columns:210px 1fr;min-height:260px;padding:24px}.mascot-card.feature .mascot-img{width:198px;border-radius:38px}.mascot-card.feature h3{font-size:clamp(1.55rem,2vw,2.2rem)}.mascot-card.feature strong{font-size:clamp(1.35rem,2vw,2rem)}.snapshot-modal .snapshot-dialog{width:min(1680px,calc(100vw - 28px))!important;max-height:calc(100vh - 28px)!important}.snapshot-modal .snapshot-body-scroll{max-height:calc(100vh - 140px)!important;overflow-y:auto!important;overflow-x:hidden!important;padding-right:6px}.snapshot-modal .snapshot-plane{grid-template-columns:minmax(0,1fr) minmax(360px,440px)!important;gap:22px!important}.snapshot-modal .snap-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))!important}.snapshot-modal .snap-card{min-height:124px!important}.snapshot-modal .snap-card strong{font-size:clamp(1.22rem,1.65vw,1.72rem)!important}.snapshot-modal .snap-cols{gap:14px!important}.snapshot-modal .snap-section{max-height:320px;overflow-y:auto;padding-right:4px}.snapshot-modal .pie-card svg{min-height:330px}.chartbox{overflow-x:hidden!important}.chartbox svg{height:640px!important;width:100%!important}.chart.chart{padding-bottom:28px}.protection-grid{grid-template-columns:repeat(2,minmax(300px,1fr))}.shield-card{grid-template-columns:128px 1fr;min-height:180px;padding:22px}.shield-art{width:118px;aspect-ratio:1;background:url("assets/insurance-shield.png") center/contain no-repeat;filter:drop-shadow(0 18px 28px rgba(56,189,248,.22))}.shield-card strong{font-size:clamp(2rem,4vw,4.2rem);line-height:.95;color:var(--accent,#38bdf8)}.shield-card .coverage-need{font-size:.9rem;line-height:1.45}.ui-switch{width:52px;height:30px;border-radius:999px;background:color-mix(in srgb,var(--muted) 24%,var(--panel));border:1px solid var(--line);position:relative;display:inline-block;flex:0 0 auto;vertical-align:middle;transition:background .18s ease,border-color .18s ease,box-shadow .18s ease}.ui-switch:after{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:999px;background:var(--text);box-shadow:0 6px 14px rgba(2,6,23,.24);transition:transform .18s ease}.ui-switch.on{background:linear-gradient(135deg,var(--primary),var(--teal));border-color:transparent;box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 14%,transparent)}.ui-switch.on:after{transform:translateX(22px);background:#fff}.switch-row{cursor:pointer}.coverage-box .switch-row,.policy-card .switch-row{justify-content:flex-start}.policy-card h4{margin:16px 0 10px;color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}.policy-card,.coverage-box,.tax-relief-card{border-radius:16px}.tax-relief-card summary .switch-row{width:100%;justify-content:space-between}.tax-relief-card summary .switch-row .ui-switch{order:2}.section-head h2,.card h3,.eventbox h3,.policy-head strong{text-wrap:balance}@media(max-width:980px){.expense-page-grid{grid-template-columns:1fr}.expense-left .card{min-height:auto}.expense-right{grid-template-rows:auto}.snapshot-modal .snapshot-plane{grid-template-columns:1fr!important}.protection-grid{grid-template-columns:1fr}.shield-card{grid-template-columns:94px 1fr}.shield-art{width:90px}.chartbox svg{height:520px!important}}@media(max-width:640px){.mascot-card.feature{grid-template-columns:1fr;text-align:center}.mascot-card.feature .mascot-img{width:min(230px,72vw);margin:auto}.expense-right .homegrid{grid-template-columns:1fr}.snapshot-modal .snapshot-dialog{width:calc(100vw - 12px)!important}.snapshot-modal .snapshot-body-scroll{max-height:calc(100vh - 120px)!important}.snapshot-modal .snap-grid{grid-template-columns:1fr!important}}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#263b55">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="stylesheet" href="minimal.css">
+<link rel="stylesheet" href="pwa.css">
+<script src="pwa.js" defer></script>
 </head>
 <body>
 <main id="app"></main>
@@ -1041,15 +1050,25 @@ input:focus,select:focus,textarea:focus{border-color:var(--workspace-accent)!imp
 const renderBeforeMinimalDark=render;render=function(){document.querySelectorAll("body > .record-modal").forEach(m=>m.remove());let timer=setTimeout(()=>document.body.classList.add("app-rendering"),180);try{renderBeforeMinimalDark()}finally{clearTimeout(timer);document.body.classList.remove("app-rendering");requestAnimationFrame(animateKpis)}}
 // Only committed wizard navigation animates; ordinary edits and dashboard renders do not.
 document.head.insertAdjacentHTML('beforeend', `<style>.page,.page.shuffle,.page.shuffle *{animation:none!important}.wizard{position:relative}.page h2{scroll-margin-top:120px}.page h2:focus{outline:none}</style>`);
-let motionStep=null,motionDispose=()=>{};
+let motionStep=null,motionDispose=()=>{},motionDrawerOpen=false;
 const renderBeforeVerticalDrift=render;
 render=function(){
   const oldStep=motionStep;
   const changed=oldStep!==step;
   motionDispose();
-  const snapshots=Array.from(document.querySelectorAll('.wizard .page,.wizard .wizard-actions')).map(element=>element.cloneNode(true));
+  const selector='.wizard .page,.wizard .summary-motion'+(innerWidth>900?',.wizard .wizard-actions':'');
+  const snapshots=Array.from(document.querySelectorAll(selector)).map(element=>element.cloneNode(true));
   renderBeforeVerticalDrift();
-  const elements=Array.from(document.querySelectorAll('.wizard .page,.wizard .wizard-actions'));
+  // Dock the existing live summary in the workspace instead of floating over inputs.
+  const workspace=document.querySelector('.wizard'),summary=document.querySelector('.live-summary');
+  if(workspace&&summary){const group=document.createElement('div');group.className='summary-motion';workspace.insertBefore(group,workspace.querySelector('.wizard-actions'));group.append(summary)}
+  if(workspace){const actions=workspace.querySelector('.wizard-actions'),view=document.getElementById('viewDash'),projectionRail=workspace.querySelector('.rail');if(actions){const sections=document.createElement('button');sections.type='button';sections.className='btn mobile-sections-action';sections.textContent='Sections';sections.onclick=()=>document.getElementById('mobileStepToggle')?.click();actions.insertBefore(sections,view)}if(projectionRail){const projection=document.createElement('button');projection.type='button';projection.className='mobile-section-projection';projection.textContent='Projection';projection.onclick=()=>view?.click();projectionRail.append(projection)}}
+  const rail=workspace?.querySelector('.rail'),drawerOpen=Boolean(window.mobileStepDrawerOpen&&innerWidth<=900),toggle=document.getElementById('mobileStepToggle');
+  if(rail){rail.id='planner-sections';rail.setAttribute('role',drawerOpen?'dialog':'navigation');if(drawerOpen)rail.setAttribute('aria-modal','true');else rail.removeAttribute('aria-modal')}
+  if(toggle){toggle.setAttribute('aria-expanded',String(drawerOpen));toggle.setAttribute('aria-controls','planner-sections');toggle.setAttribute('aria-label','Plan sections')}
+  if(drawerOpen)rail?.querySelector('button')?.focus();else if(motionDrawerOpen&&!changed)toggle?.focus();
+  motionDrawerOpen=drawerOpen;
+  const elements=Array.from(document.querySelectorAll(selector));
   motionStep=elements.length?step:null;
   if(!changed||oldStep===null||!elements.length)return;
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -1069,6 +1088,11 @@ render=function(){
   }
   const heading=document.querySelector('.wizard .page h2');if(heading){heading.tabIndex=-1;heading.scrollIntoView({block:'start',behavior:'instant'});heading.focus({preventScroll:true})}
 };
+document.addEventListener('keydown',event=>{
+  if(!window.mobileStepDrawerOpen||innerWidth>900)return;
+  if(event.key==='Escape'){event.preventDefault();window.mobileStepDrawerOpen=false;render();document.getElementById('mobileStepToggle')?.focus()}
+  if(event.key==='Tab'){const buttons=Array.from(document.querySelectorAll('.rail.open button')),first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}}
+});
 render();
 </script>
 </body>

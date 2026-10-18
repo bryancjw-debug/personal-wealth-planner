@@ -2516,7 +2516,7 @@ function ProjectionCharts({
           <h3>Net Worth By Age</h3>
           <div className="chart-scroll-lane" role="region" aria-label="Inspect net worth by age">
             <div className="chart-scroll-canvas">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 640, height: 320 }}>
                 <ComposedChart data={visibleData} margin={{ top: 10, right: 12, bottom: 16, left: 2 }} onClick={chartClick}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.14} />
                   <XAxis dataKey="age" tickLine={false} axisLine={false} />
@@ -2532,7 +2532,7 @@ function ProjectionCharts({
           <h3>Cash Flow By Age</h3>
           <div className="chart-scroll-lane" role="region" aria-label="Inspect cash flow by age">
             <div className="chart-scroll-canvas">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 640, height: 320 }}>
                 <ComposedChart data={visibleData} margin={{ top: 10, right: 12, bottom: 16, left: 2 }} onClick={chartClick}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.14} />
                   <XAxis dataKey="age" tickLine={false} axisLine={false} />
@@ -3194,7 +3194,7 @@ function YearSnapshot({
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="h-72">
-                <ResponsiveContainer>
+                <ResponsiveContainer initialDimension={{ width: 320, height: 288 }}>
                   <PieChart>
                     <Pie data={slices} dataKey="value" nameKey="name" innerRadius={58} outerRadius={100} paddingAngle={2}>
                       {slices.map((_, index) => (
@@ -3506,7 +3506,7 @@ function App() {
           </Button>
         </div>
         <div className="react-appbar-actions flex flex-wrap items-center gap-2">
-          <select className="react-select w-auto min-w-44" value={store.activeId} onChange={(event) => switchProfile(event.target.value)}>
+          <select aria-label="Current profile" className="react-select w-auto min-w-44" value={store.activeId} onChange={(event) => switchProfile(event.target.value)}>
             {store.profiles.map((item) => (
               <option key={item.id} value={item.id}>{item.name}</option>
             ))}
@@ -3514,7 +3514,7 @@ function App() {
           <Button variant="outline" aria-label="Home" title="Home" onClick={() => { setDashboard(false); setShowWelcome(true); }}>
             <Home className="h-4 w-4" />
           </Button>
-          <Button variant="outline" onClick={() => update({ dark: !normalized.dark })}>{normalized.dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}</Button>
+          <Button variant="outline" aria-label={normalized.dark ? "Switch to light mode" : "Switch to dark mode"} title={normalized.dark ? "Switch to light mode" : "Switch to dark mode"} onClick={() => update({ dark: !normalized.dark })}>{normalized.dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}</Button>
           <Button
             variant="outline"
             onClick={() => confirmProfileAction({

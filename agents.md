@@ -10,9 +10,23 @@ This is a Singapore wealth projection app.
 
 ## User Preferences and Step Motion (6 October 2026)
 
+### Minimal Workspace and PWA (18 October 2026)
+
+- Use a flat, restrained Notion/iOS/OneUI-inspired workspace: system sans-serif typography, thin borders, no raised-card shadows or hover lifts. Retain semantic chart colours and existing financial calculations.
+- Use available desktop width with a compact persistent section sidebar; keep mobile forms full-width and section navigation in a drawer. Dock the live summary below inputs so it cannot cover fields.
+- The standalone site's presentation lives in `docs/minimal.css`; do not confuse it with the React preview.
+- PWA assets are scoped to this app's URL. Run `npm run build:standalone` before publishing docs to generate the content-versioned worker, then run its PWA checks. Never clear unrelated applications' caches or cache client exports/submitted data.
+- Do not force a service-worker update/reload during entry. Offer an explicit update and warn about unsaved answers. Offline users see the last downloaded version; installation is not a backup. iOS uses its browser Add to Home Screen flow.
+- Review both apps locally before publishing; PWA/browser checks do not replace native Android/Windows/iOS install testing.
+
+- React tooling uses Tailwind 4 with `@tailwindcss/postcss`, explicit `src` scanning and the existing `tailwind.config.ts` loaded through `@config`. Keep v3-compatible control defaults in `src/styles.css` and Tailwind-4-compatible `tailwind-merge`. This build is separate from the published standalone `docs/index.html`; never substitute `dist` for the live calculator during tooling upgrades.
+- After dependency changes, verify `npm ci`, `npm audit`, `npm test` and `npm run build`, plus browser checks in both themes and responsive widths. An audit with no advisories is not a penetration test or regulatory certification.
+
 - Keep Common Cents comprehensive and distinct from the focused RetirementReadiness questionnaire. Preserve the established palette, financial calculations, saved profiles, input values and responsive charts during design changes.
 - Aim for a simple, modern Apple-like feel and Samsung-like polish: readable type, clear selected controls, softer visual hierarchy and restrained semantic colour. Clarity for beginners and older users takes priority over decoration.
-- Approved motion (6 October 2026): Next moves the current step upward and brings the next step in from below. Back reverses the direction. Use the gentle-drift preview's 1.1-second fading motion, including step navigation buttons; keep global navigation, profile actions and summaries stationary.
+- Approved motion: Next moves the current step upward and brings the next step in from below; Back reverses direction. Use the gentle-drift preview's 1.1-second fading motion. The docked live summary moves with the form (18 October refinement); global navigation and profile actions stay stationary. Desktop step actions can move; the mobile bottom bar stays anchored to the viewport.
+
+- Mobile uses Back / Sections / Next or Build actions with a separate Projection link in the section sheet. Preserve space below content and safe-area padding. Avoid backdrop-filter/transform on the wizard ancestor of fixed controls. Recheck fixed-bar positioning after resizing.
 - Show an isolated interactive preview before applying or publishing broad transition changes. The 6 October preview is `output/step-transition-preview/index.html`; do not include it in deployed `docs`.
 - Motion lasts 1100ms with smooth easing, 80px maximum vertical travel and a staggered fade; no bounce or zoom. Cancel unfinished animation and remove inert outgoing copies during rapid navigation. Never duplicate accessible IDs or interactive outgoing controls.
 - Do not animate on field edits, calculation updates, chart tooltips or theme changes. Preserve focus, values and validation. On committed navigation, restore the next step's top and focus its heading without a second animated scroll.

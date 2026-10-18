@@ -1,0 +1,11 @@
+import { readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+const path = "docs/sw.js";
+const source = await readFile(path, "utf8");
+const shell = JSON.parse(source.match(/^const SHELL = (.+);$/m)[1]);
+const hash = createHash("sha256");
+hash.update(source.replace(/^const CACHE = .+;$/m, 'const CACHE = "VERSION";'));
+for (const file of shell) hash.update(await readFile(`docs/${file}`));
+const version = `commoncents-shell-${hash.digest("hex").slice(0, 12)}`;
+await writeFile(path, source.replace(/^const CACHE = .+;$/m, `const CACHE = "${version}";`));
+console.log(`Versioned standalone offline shell: ${version}`);
