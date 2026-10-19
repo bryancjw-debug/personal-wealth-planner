@@ -15,6 +15,7 @@ This is a Singapore wealth projection app.
 - Use a flat, restrained Notion/iOS/OneUI-inspired workspace: system sans-serif typography, thin borders, no raised-card shadows or hover lifts. Retain semantic chart colours and existing financial calculations.
 - Use available desktop width with a compact persistent section sidebar; keep mobile forms full-width and section navigation in a drawer. Dock the live summary below inputs so it cannot cover fields.
 - The standalone site's presentation lives in `docs/minimal.css`; do not confuse it with the React preview.
+- Keep the section rail, input page and docked summary in one continuous bordered workspace. Avoid decorative stripes and orphaned divider edges. The app header should not reserve a second blank header-height gap; install/update tools remain in document flow and use theme colours.
 - PWA assets are scoped to this app's URL. Run `npm run build:standalone` before publishing docs to generate the content-versioned worker, then run its PWA checks. Never clear unrelated applications' caches or cache client exports/submitted data.
 - Do not force a service-worker update/reload during entry. Offer an explicit update and warn about unsaved answers. Offline users see the last downloaded version; installation is not a backup. iOS uses its browser Add to Home Screen flow.
 - Review both apps locally before publishing; PWA/browser checks do not replace native Android/Windows/iOS install testing.
