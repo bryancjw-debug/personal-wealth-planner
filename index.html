@@ -1050,15 +1050,31 @@ input:focus,select:focus,textarea:focus{border-color:var(--workspace-accent)!imp
 const renderBeforeMinimalDark=render;render=function(){document.querySelectorAll("body > .record-modal").forEach(m=>m.remove());let timer=setTimeout(()=>document.body.classList.add("app-rendering"),180);try{renderBeforeMinimalDark()}finally{clearTimeout(timer);document.body.classList.remove("app-rendering");requestAnimationFrame(animateKpis)}}
 // Only committed wizard navigation animates; ordinary edits and dashboard renders do not.
 document.head.insertAdjacentHTML('beforeend', `<style>.page,.page.shuffle,.page.shuffle *{animation:none!important}.wizard{position:relative}.page h2{scroll-margin-top:120px}.page h2:focus{outline:none}</style>`);
-let motionStep=null,motionDispose=()=>{},motionDrawerOpen=false;
+let motionStep=null,motionDispose=()=>{},motionDrawerOpen=false,landingVisible=false,landingScroll=0;
+welcome=function(){
+  const tiles=[['Projected Net Worth','SGD 1.9M','At age 65'],['Retirement Readiness','Funded to 100','Illustrative scenario'],['Emergency Cash','6.7 months','Based on expenses'],['CPF Total','SGD 620K','OA, SA, MA and RA'],['Nett Cash Flow','+SGD 18K','Current-year view'],['Protection','A clearer picture','Coverage and gaps']];
+  return `<section class="cc-landing" aria-labelledby="landing-title"><div class="cc-landing-brand"><strong>Common Cents</strong><span>Difficult Dollars To Common Cents</span></div><h1 id="landing-title" tabindex="-1">See where your money is going, and where it could take you.</h1><h2>Your Personal Finance, Simplified.</h2><p class="cc-landing-intro">Turn CPF, cash flow, protection, property, investments, taxes, and life events into a clear year-by-year wealth view.</p><div class="cc-landing-modules">${['CPF','SRS','Taxes','Insurance','Property','Retirement'].map(x=>`<span>${x}</span>`).join('')}</div><div class="cc-landing-actions">${state.welcomed?'<button type="button" id="resumeCurrentPlan">Continue current plan</button>':''}<button type="button" id="startGeneric">Try with sample figures</button><button type="button" id="startBlank">Start from my own details</button></div><div class="cc-landing-demo" aria-label="Illustrative projection preview, not your result"><header><span>Projection preview</span><span>Illustrative figures</span></header><div class="cc-landing-bars" aria-hidden="true">${[18,25,33,42,54,68,84,72,64,58,62,67].map((h,i)=>`<i style="--bar:${h}%;--delay:${i*45}ms"></i>`).join('')}</div><div class="cc-landing-metrics"><div><span>Net Worth</span><strong>SGD 1.9M</strong></div><div><span>Cash Flow</span><strong>+SGD 18K</strong></div><div><span>Readiness</span><strong>Funded</strong></div></div></div><div class="cc-landing-filmstrip" aria-hidden="true"><div>${[...tiles,...tiles].map(([label,value,note])=>`<div class="cc-landing-tile"><span>${label}</span><strong>${value}</strong><small>${note}</small></div>`).join('')}</div></div><p class="cc-landing-note">8 guided steps. About 5–10 minutes. No login required. Preview figures are examples, not a forecast. Your answers replace them. Projections are estimates, not financial advice.</p></section>`;
+};
+document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="landing.css">');
 const renderBeforeVerticalDrift=render;
 render=function(){
+  if(landingVisible||!state.welcomed){
+    motionDispose();motionStep=null;
+    app.innerHTML=welcome();bind(project());
+    const pause=document.createElement('button');pause.type='button';pause.className='cc-landing-motion';pause.textContent='Pause motion';pause.setAttribute('aria-pressed','false');pause.onclick=()=>{const paused=document.querySelector('.cc-landing').classList.toggle('motion-paused');pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'Resume motion':'Pause motion'};document.querySelector('.cc-landing-brand')?.append(pause);
+    const resume=document.getElementById('resumeCurrentPlan');
+    if(resume)resume.onclick=()=>{landingVisible=false;render();window.scrollTo({top:landingScroll,behavior:'instant'});document.querySelector('.home-control')?.focus({preventScroll:true})};
+    for(const id of ['startGeneric','startBlank']){const button=document.getElementById(id),start=button?.onclick;if(button)button.onclick=()=>{if(state.welcomed&&!confirm('Start a new plan? Your current unsaved entries will be replaced. Save the current profile first if you want to keep it.'))return;landingVisible=false;start?.()}}
+    return;
+  }
   const oldStep=motionStep;
   const changed=oldStep!==step;
   motionDispose();
   const selector='.wizard .page,.wizard .summary-motion'+(innerWidth>900?',.wizard .wizard-actions':'');
   const snapshots=Array.from(document.querySelectorAll(selector)).map(element=>element.cloneNode(true));
   renderBeforeVerticalDrift();
+  const title=document.querySelector('.appbar .app-title');
+  if(title){const home=document.createElement('button');home.type='button';home.className='btn home-control';home.title='Home';home.setAttribute('aria-label','Home');home.innerHTML=icon('assets')+'<span>Home</span>';home.onclick=()=>{landingScroll=scrollY;landingVisible=true;window.mobileStepDrawerOpen=false;menuOpen=false;render();window.scrollTo({top:0,behavior:'instant'});document.getElementById('landing-title')?.focus({preventScroll:true})};title.querySelector('.icon-badge')?.remove();title.prepend(home)}
   // Dock the existing live summary in the workspace instead of floating over inputs.
   const workspace=document.querySelector('.wizard'),summary=document.querySelector('.live-summary');
   if(workspace&&summary){const group=document.createElement('div');group.className='summary-motion';workspace.insertBefore(group,workspace.querySelector('.wizard-actions'));group.append(summary)}
