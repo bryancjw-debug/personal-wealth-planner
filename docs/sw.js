@@ -1,6 +1,6 @@
-const CACHE = "commoncents-shell-4c3ede55fb52";
+const CACHE = "commoncents-shell-ba50a4f26408";
 const PREFIX = "commoncents-shell-";
-const SHELL = ["./index.html","./manifest.webmanifest","./pwa.js","./pwa.css","./icons/icon-192.png","./icons/icon-512.png","./icons/apple-touch-icon.png","./icons/maskable-512.png","./minimal.css","./assets/wealth-bg-dark.png","./assets/wealth-bg-light.png","./assets/wealth-visual-atlas.png","./assets/wealth-snapshot-tiles.png","./assets/emergency-cash-mascots.png","./assets/protection-sprites.png","./assets/insurance-shield.png"];
+const SHELL = ["./index.html","./manifest.webmanifest","./pwa.js","./pwa.css","./icons/icon-192.png","./icons/icon-512.png","./icons/apple-touch-icon.png","./icons/maskable-512.png","./minimal.css","./landing.css","./assets/wealth-bg-dark.png","./assets/wealth-bg-light.png","./assets/wealth-visual-atlas.png","./assets/wealth-snapshot-tiles.png","./assets/emergency-cash-mascots.png","./assets/protection-sprites.png","./assets/insurance-shield.png"];
 const allowed = new Set(SHELL.map(path => new URL(path, self.registration.scope).href));
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL.map(path => new Request(new URL(path, self.registration.scope).href, { cache: "reload" }))))));
 self.addEventListener("activate", event => event.waitUntil((async () => {
