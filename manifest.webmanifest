@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Common Cents",
-  "short_name": "CommonCents",
-  "description": "Private, guided Singapore financial planning.",
+  "name": "Personal Wealth Planner (Retired Prototype)",
+  "short_name": "LegacyPlanner",
+  "description": "Retired prototype. Use the maintained CommonCents app for new planning.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

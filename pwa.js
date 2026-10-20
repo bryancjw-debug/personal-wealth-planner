@@ -35,7 +35,7 @@
   const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone;
   function status() {
     offline.textContent = navigator.onLine ? "" : "Offline - saved app version";
-    install.hidden = Boolean(standalone());
+    install.hidden = true; // Retired prototype: keep update support, not new installations.
   }
   window.addEventListener("online", status);
   window.addEventListener("offline", status);
