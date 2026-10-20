@@ -1,4 +1,10 @@
-# Financial Projection Dashboard
+# Personal Wealth Planner - Retired Prototype
+
+**Retired 20 October 2026.** The maintained app is [CommonCents](https://bryancjw-debug.github.io/common-cents/), repository [bryancjw-debug/common-cents](https://github.com/bryancjw-debug/common-cents).
+
+This repository is preserved as the prototype, not the canonical CommonCents app. Its final Pages release shows an archive notice. `docs/legacy.html` retains the old planner so users can retrieve/export their browser-local plans. No stored entries are automatically deleted or converted. Do not publish further CommonCents updates to this repository.
+
+## Historical Documentation
 
 A polished client-side React + TypeScript app for guided wealth planning.
 

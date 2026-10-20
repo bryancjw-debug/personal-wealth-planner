@@ -1,4 +1,13 @@
-This is a Singapore wealth projection app.
+## Repository Identity Correction - 20 October 2026
+
+This checkout is **Personal Wealth Planner**, the retired prototype: `bryancjw-debug/personal-wealth-planner`. It is NOT the maintained CommonCents app. Earlier instructions below misidentified it and are historical only wherever they conflict with this correction.
+
+- Canonical CommonCents repository: `https://github.com/bryancjw-debug/common-cents.git`; live app: `https://bryancjw-debug.github.io/common-cents/`.
+- Canonical checkout created here: `common-cents-canonical/`, with its own remote, source, tests and AGENTS.md. Check its identity before edits. It deploys its React **dist** through GitHub Actions, not this repository's standalone docs.
+- This prototype's final Pages build is `docs`; its home is an archive notice and `docs/legacy.html` preserves retrieval of old saved plans. Keep legacy browser storage intact. Do not continue feature development here.
+- Do not substitute the prototype's standalone app for CommonCents or claim one app's checks/deployment verify the other.
+
+This was a Singapore wealth projection prototype.
 
 - Preserve calculation logic unless explicitly requested.
 - Use Notion/Apple-inspired UI.
